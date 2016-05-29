@@ -1,0 +1,34 @@
+{
+  "name": "bankson-js",
+  "version": "1.0.0",
+  "description": "Bankson.fi Node client",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src --out-dir lib",
+    "dev": "babel -w src --out-dir lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/banksonfi/bankson-js.git"
+  },
+  "keywords": [
+    "bankson",
+    "camt",
+    "pain",
+    "corporatefileservice"
+  ],
+  "author": "Bankson authors",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/banksonfi/bankson-js/issues"
+  },
+  "homepage": "https://github.com/banksonfi/bankson-js#readme",
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "babel-preset-es2015": "^6.9.0"
+  },
+  "dependencies": {
+    "node-fetch": "^1.5.3"
+  }
+}
