@@ -22,6 +22,7 @@ export default class Client {
     this.beforeRequest = opts.beforeRequest || (() => Promise.resolve());
     this.bearerToken = opts.bearerToken || '-';
     this.baseUrl = opts.baseUrl || 'https://api.bankson.fi';
+    this.testMode = typeof opts.test !== 'undefined' ? opts.test : false;
   }
 
   me() {
@@ -31,7 +32,7 @@ export default class Client {
   headers(additionalHeaders = {}) {
     return this.beforeRequest().then(result => {
       let bearerToken = result && result.bearerToken || this.bearerToken
-        , banksonTest = !!result && !!result.test
+        , banksonTest = result && typeof result.test !== 'undefined' ? result.test : this.testMode
         , headers = new Headers();
       headers.append('Accept', additionalHeaders.Accept || 'application/json');
       headers.append('Authorization', 'Bearer ' + bearerToken);
