@@ -6,6 +6,7 @@ import BankAccounts from './ext/bank-accounts';
 import BankAccountStatements from './ext/bank-account-statements';
 import Payments from './ext/payments';
 
+import FormData from 'form-data';
 import fetch from 'node-fetch';
 const Headers = fetch.Headers || window.Headers; // We are in a browser
 

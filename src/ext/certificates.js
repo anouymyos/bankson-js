@@ -1,3 +1,5 @@
+import FormData from 'form-data';
+
 export default class Certificates {
   constructor(base) {
     this.base = base;

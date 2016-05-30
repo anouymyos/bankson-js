@@ -29,6 +29,7 @@
     "babel-preset-es2015": "^6.9.0"
   },
   "dependencies": {
+    "form-data": "^1.0.0-rc4",
     "node-fetch": "^1.5.3"
   }
 }
