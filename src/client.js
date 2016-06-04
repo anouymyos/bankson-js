@@ -5,6 +5,7 @@ import Calls from './ext/calls';
 import BankAccounts from './ext/bank-accounts';
 import BankAccountStatements from './ext/bank-account-statements';
 import Payments from './ext/payments';
+import InboundPayments from './ext/inbound-payments';
 
 import FormData from 'form-data';
 import fetch from 'node-fetch';
@@ -20,6 +21,7 @@ export default class Client {
     this.bankAccounts = new BankAccounts(this);
     this.bankAccountStatements = new BankAccountStatements(this);
     this.payments = new Payments(this);
+    this.inboundPayments = new InboundPayments(this);
     this.beforeRequest = opts.beforeRequest || (() => Promise.resolve());
     this.bearerToken = opts.bearerToken || '-';
     this.baseUrl = opts.baseUrl || 'https://api.bankson.fi';
