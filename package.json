@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "form-data": "^1.0.0-rc4",
-    "node-fetch": "^1.5.3"
+    "node-fetch": "^1.5.3",
+    "qs": "^6.2.0"
   }
 }
