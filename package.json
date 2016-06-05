@@ -1,6 +1,6 @@
 {
   "name": "bankson-js",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Bankson.fi Node client",
   "main": "lib/index.js",
   "scripts": {
