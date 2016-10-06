@@ -6,6 +6,9 @@ import BankAccounts from './ext/bank-accounts';
 import BankAccountStatements from './ext/bank-account-statements';
 import Payments from './ext/payments';
 import InboundPayments from './ext/inbound-payments';
+import ApiKeys from './ext/apikeys';
+
+import NodeRSA from 'node-rsa';
 
 import FormData from 'form-data';
 import fetch from 'node-fetch';
@@ -21,15 +24,36 @@ export default class Client {
     this.bankAccounts = new BankAccounts(this);
     this.bankAccountStatements = new BankAccountStatements(this);
     this.payments = new Payments(this);
+    this.apikeys = new ApiKeys(this);
     this.inboundPayments = new InboundPayments(this);
     this.beforeRequest = opts.beforeRequest || (() => Promise.resolve());
     this.bearerToken = opts.bearerToken || '-';
     this.baseUrl = opts.baseUrl || 'https://api.bankson.fi';
     this.testMode = typeof opts.test !== 'undefined' ? opts.test : false;
+    if (opts.privateKey && opts.apiKey) {
+      // ApiKey authentication
+      this.bearerToken = false;
+      this.privateKey = new NodeRSA();
+      this.privateKey.importKey(opts.privateKey, 'private');
+      if (!this.privateKey.isPrivate()) throw new Error('Invalid private key');
+      this.apiKey = opts.apiKey;
+    }
   }
 
   me() {
     return this.get('/me');
+  }
+
+  authorizationHeader(bearerToken) {
+    if (this.bearerToken) return 'Bearer ' + bearerToken;
+    let timestamp = Date.now()
+      , str = this.apiKey + timestamp
+      , signature = this.privateKey.sign(str, 'base64');
+    return 'BanksonRSA ' + [
+      'ApiKey=' + this.apiKey,
+      'Timestamp=' + timestamp,
+      'Signature=' + signature
+    ].join(', ');
   }
 
   headers(additionalHeaders = {}) {
@@ -38,7 +62,7 @@ export default class Client {
         , banksonTest = result && typeof result.test !== 'undefined' ? result.test : this.testMode
         , headers = new Headers();
       headers.append('Accept', additionalHeaders.Accept || 'application/json');
-      headers.append('Authorization', 'Bearer ' + bearerToken);
+      headers.append('Authorization', this.authorizationHeader(bearerToken));
       if (banksonTest) headers.append('X-Bankson-Environment', 'Test');
       return headers;
     });
