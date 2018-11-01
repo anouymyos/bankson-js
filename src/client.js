@@ -73,13 +73,21 @@ export default class Client {
   }
 
   post(path, data) {
+    return request('POST', path, data);
+  }
+
+  put(path, data) {
+    return request('PUT', path, data);
+  }
+
+  request(method, path, data) {
     return this.headers().then(headers => {
       let isFormData = data instanceof FormData;
       if (!isFormData) {
         headers.append('Content-Type', 'application/json');
       }
       return fetch(`${this.baseUrl}${path}`, {
-        method: 'POST',
+        method,
         body: isFormData ? data : JSON.stringify(data),
         headers
       }).then(this.handleResponse);
